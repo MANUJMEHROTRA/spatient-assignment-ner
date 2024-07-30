@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentence Processor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+        }
+        .output pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentence Processor</h1>
+        <form id="sentenceForm">
+            <label for="sentence">Enter a sentence:</label>
+            <input type="text" id="sentence" name="sentence" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="output" id="output">
+            <h3>Output:</h3>
+            <pre id="outputJson"></pre>
+        </div>
+    </div>
+    <script>
+        document.getElementById('sentenceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const sentence = document.getElementById('sentence').value;
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `sentence=${encodeURIComponent(sentence)}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('outputJson').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

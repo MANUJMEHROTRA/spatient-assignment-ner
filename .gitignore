@@ -1,0 +1,5 @@
+log/
+model/
+.env
+data/
+trash/
